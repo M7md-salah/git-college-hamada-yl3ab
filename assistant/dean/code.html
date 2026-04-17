@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Room Request Approval - DeanPortal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#737780",
+                      "tertiary-container": "#592300",
+                      "tertiary-fixed": "#ffdbca",
+                      "inverse-surface": "#2e3132",
+                      "on-surface": "#191c1d",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed": "#001b3c",
+                      "outline-variant": "#c3c6d1",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface-tint": "#3a5f94",
+                      "on-surface-variant": "#43474f",
+                      "primary-fixed-dim": "#a7c8ff",
+                      "surface-dim": "#d9dadb",
+                      "secondary-fixed": "#cce5ff",
+                      "surface-container-high": "#e7e8e9",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#723610",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-primary-fixed-variant": "#1f477b",
+                      "on-secondary-fixed": "#011d31",
+                      "error-container": "#ffdad6",
+                      "primary-fixed": "#d5e3ff",
+                      "secondary-fixed-dim": "#b0c9e3",
+                      "on-secondary-container": "#4d657b",
+                      "on-primary": "#ffffff",
+                      "primary": "#001e40",
+                      "secondary": "#496177",
+                      "on-tertiary-fixed": "#341100",
+                      "surface-variant": "#e1e3e4",
+                      "tertiary": "#381300",
+                      "surface-bright": "#f8f9fa",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#c9e2fd",
+                      "on-tertiary-container": "#d8885c",
+                      "on-primary-container": "#799dd6",
+                      "tertiary-fixed-dim": "#ffb690",
+                      "on-secondary-fixed-variant": "#31495e",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#191c1d",
+                      "surface-container-low": "#f3f4f5",
+                      "background": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "primary-container": "#003366",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f8f9fa",
+                      "inverse-primary": "#a7c8ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Manrope", "sans-serif"
+                      ],
+                      "body": [
+                              "Inter", "sans-serif"
+                      ],
+                      "label": [
+                              "Inter", "sans-serif"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    }
+</script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm transition-colors">
+<div class="flex items-center gap-4 md:gap-8">
+<div class="text-lg md:text-xl font-bold tracking-tight text-primary dark:text-blue-50 font-headline"><a href="#">Dean Portal</a></div>
+<nav class="hide-on-mobile flex gap-6 font-manrope text-sm font-medium">
+<a class="text-primary dark:text-white font-bold border-b-2 border-primary pb-1 transition-all duration-200" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors pb-1 border-b-2 border-transparent" href="#">Academic Board</a>
+</nav>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button id="theme-toggle" class="text-primary dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">light_mode</span>
+</button>
+<div class="hide-on-mobile relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-variant/50 border-b border-outline-variant text-on-surface text-sm pl-9 pr-4 py-1.5 focus:border-b-primary focus:ring-0 transition-colors w-48 font-body rounded-t-md" placeholder="Search..." type="text"/>
+</div>
+<button class="text-primary dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span id="dean-notif-dot" class="absolute top-2 right-2 w-1.5 h-1.5 bg-error rounded-full hidden"></span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+    <img alt="Dean Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsSnLlU2eo3y6RZmezm_S4hQeblEBhQ_id4wKxtmq-E4geKheH_O7DykgsRfpuRAvZFQPZfDhDIjLL9OOg2QZJJx7t6jIuOyCHeEA8eKF9G_r31Y3fKTMCRqG0US6m5f5Sly7ryt8XqXFCT7vvS1Pra0TXoXprTL22e4IyGCHCS_FGU3K62HTODiXTkRXVB0Csy2mEi_S0XsSogeTXEPKKJwdcN5eef3oRUoTXXFXDPtuFwQfArJfnKhO41SOE85KZIB-xWX7aNK0O"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav id="global-sidebar"></nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 pt-20 p-4 md:p-8 lg:p-12 bg-surface transition-all duration-300">
+<div id="view-dashboard" class="page-view animate-in fade-in duration-300 flex flex-col gap-8">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-outline-variant/15 overflow-hidden">
+<div>
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container font-label text-[10px] font-bold rounded-full mb-4 tracking-widest uppercase">Dean of Faculty</span>
+<h1 class="text-2xl md:text- display-md font-bold text-primary mb-2 user-name-display truncate">Welcome back, Dr. Sterling.</h1>
+<p class="text-on-surface-variant font-body text-sm md:text-base">Administrative Oversight Hub • Fall 2026</p>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none justify-center px-4 py-2.5 bg-surface-container-lowest text-primary rounded-lg font-bold text-sm shadow-sm hover:bg-surface-container-low transition-all border border-outline-variant/20 active:scale-95">
+                    Export Audit 
+                </button>
+<button id="dean-new-req-btn" class="flex-1 md:flex-none justify-center px-4 py-2.5 bg-primary text-on-primary rounded-lg font-bold text-sm bg-gradient-to-br from-primary to-primary-container shadow-xl active:scale-95 transition-all flex items-center gap-2 unimplemented-btn">
+<span class="material-symbols-outlined text-sm">add_circle</span> New Directive
+</button>
+</div>
+</header>
+<!-- Notifications Inbox (Visual Proof) -->
+<section id="inbox-section" class="mb-10 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-headline font-bold text-xl text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary">mail_lock</span> Institutional Inbox
+        </h3>
+        <button id="clear-notifs-btn" class="text-xs font-bold text-primary/60 hover:text-primary transition-colors">Clear All</button>
+    </div>
+    <div id="inbox-container" class="space-y-3">
+        <!-- Dynamically populated -->
+        <div class="p-8 text-center bg-surface-container-low/30 rounded-xl border border-dashed border-outline-variant/30 text-outline italic text-sm">
+            No active directives.
+        </div>
+    </div>
+</section>
+
+<!-- Teacher Messages (Executive Inbox) -->
+<section id="teacher-messages-section" class="mb-12 animate-in slide-in-from-right duration-500">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-headline font-bold text-xl text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary">forum</span> Teacher Communications
+        </h3>
+        <span id="msg-count-badge" class="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+    </div>
+    <div id="teacher-messages-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Dynamically populated -->
+        <div class="md:col-span-2 p-8 text-center bg-surface-container-low/30 rounded-xl border border-dashed border-outline-variant/30 text-outline italic text-sm">
+            No pending teacher messages.
+        </div>
+    </div>
+</section>
+
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+<!-- Left Column: Request Queue (Bento Card 1) -->
+<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,27,60,0.03)] flex flex-col overflow-hidden border border-outline-variant/10">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center bg-surface/50">
+<h2 class="text-xl font-headline font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">inbox</span>
+                        Pending Requests
+                    </h2>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold px-2 py-1 rounded-full font-label">4 Requires Action</span>
+</div>
+<div class="px-6 py-3 bg-surface-container-low/50 border-b border-outline-variant/10 flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider font-label">Bulk Actions</span>
+<div class="h-4 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs font-bold transition-colors shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">done_all</span>
+                Accept All Selected
+            </button>
+<button class="px-4 py-1.5 bg-error hover:bg-red-700 text-white rounded-md text-xs font-bold transition-colors shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">delete_sweep</span>
+                Deny All Selected
+            </button>
+</div>
+</div>
+<div class="text-xs text-on-surface-variant font-medium italic">
+        0 requests selected
+    </div>
+</div><div class="flex-1 overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/10 text-on-surface-variant text-xs font-label uppercase tracking-wider bg-surface-container-low/50"><th class="p-4 w-10"><input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></th>
+<th class="p-4 font-semibold">Professor / Dept</th>
+<th class="p-4 font-semibold">Room details</th>
+<th class="p-4 font-semibold">Requested Time</th>
+<th class="p-4 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody id="request-queue-body" class="divide-y divide-outline-variant/10 font-body text-sm">
+<!-- Dynamically populated by JS from localStorage -->
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant/10 bg-surface-container-low/30 text-center">
+<button class="text-primary text-sm font-semibold hover:text-primary-container transition-colors">View All Pending Requests</button>
+</div>
+</div>
+<!-- Right Column: Integrated Schedule View (Bento Card 2) -->
+<div class="xl:col-span-1 flex flex-col gap-6">
+<!-- Mini Calendar Context -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,27,60,0.03)] p-6 border border-outline-variant/10">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-headline font-bold text-primary">Schedule Context</h3>
+<div class="flex gap-1">
+<button class="p-1 rounded text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="p-1 rounded text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+<!-- Simplified visual timeline for today -->
+<div class="space-y-4">
+<div class="flex items-center justify-between text-sm font-label mb-2">
+<span class="font-bold text-on-surface">Today, Oct 12</span>
+<span class="text-on-surface-variant">85% Capacity</span>
+</div>
+<!-- Timeline blocks -->
+<div class="relative pt-2 pb-6 border-l-2 border-surface-container-high ml-2 pl-4 space-y-6">
+<!-- Occupied Block -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-secondary-fixed ring-4 ring-surface-container-lowest"></div>
+<div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/10">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-on-surface">09:00 - 12:00</span>
+<span class="text-[10px] px-1.5 py-0.5 bg-surface-variant text-on-surface-variant rounded uppercase font-semibold">Fixed</span>
+</div>
+<p class="text-sm font-medium text-primary">Core Humanities Lectures</p>
+<p class="text-xs text-on-surface-variant mt-1">Main Hall complex fully occupied.</p>
+</div>
+</div>
+<!-- Exceptional Block -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-tertiary ring-4 ring-surface-container-lowest"></div>
+<div class="bg-tertiary-fixed/30 rounded-lg p-3 border border-tertiary-fixed/50">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-tertiary">14:00 - 17:00</span>
+<span class="text-[10px] px-1.5 py-0.5 bg-tertiary text-on-tertiary rounded uppercase font-semibold">Exceptional</span>
+</div>
+<p class="text-sm font-medium text-tertiary-container">Board of Trustees Meeting</p>
+<p class="text-xs text-tertiary-container/80 mt-1">Conference Wing restricted access.</p>
+</div>
+</div>
+<!-- Free Block -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-outline-variant ring-4 ring-surface-container-lowest"></div>
+<div class="p-2">
+<p class="text-xs font-medium text-on-surface-variant italic">17:00 onwards: General availability high.</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2 text-sm font-semibold text-primary bg-secondary-fixed/30 hover:bg-secondary-fixed/50 rounded-md transition-colors border border-secondary-fixed/50">
+                        Open Full Schedule Planner
+                    </button>
+</div>
+<!-- Quick Stats -->
+<div class="bg-primary bg-gradient-to-br from-primary to-primary-container rounded-xl shadow-lg p-6 text-on-primary relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute -right-10 -bottom-10 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">domain</span>
+</div>
+<h3 class="text-lg font-headline font-bold mb-4 relative z-10">Weekly Overview</h3>
+<div class="grid grid-cols-2 gap-4 relative z-10">
+<div>
+<p class="text-primary-fixed-dim text-xs font-label uppercase tracking-wider mb-1">Approved</p>
+<p class="text-3xl font-headline font-light">142</p>
+</div>
+<div>
+<p class="text-primary-fixed-dim text-xs font-label uppercase tracking-wider mb-1">Conflicts</p>
+<p class="text-3xl font-headline font-light text-tertiary-fixed">3</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    // Theme toggle is handled globally in components.js if id="theme-toggle" exists
+
+    // Populate dynamic Room Requests
+    function renderRequests() {
+        const reqBody = document.getElementById('request-queue-body');
+        if(!reqBody) return;
+        reqBody.innerHTML = '';
+        const storedRequests = JSON.parse(localStorage.getItem('roomRequests')) || [];
+
+        // Filter and show only Pending_Admin requests
+        const filteredRequests = storedRequests.filter(r => r.status === 'Pending_Admin');
+        
+        const notifDot = document.getElementById('dean-notif-dot');
+
+        if (filteredRequests.length === 0) {
+            reqBody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-on-surface-variant italic">No pending room requests found.</td></tr>';
+            if (notifDot) notifDot.classList.add('hidden');
+            return;
+        }
+
+        if (notifDot) notifDot.classList.remove('hidden');        
+        
+        filteredRequests.forEach((req) => {
+            const initials = req.requester ? req.requester.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase() : '??';
+            const isEditing = window.editingReqId == req.id;
+            
+            const rowHTML = `
+            <tr class="hover:bg-surface-container-low/30 transition-colors group">
+                <td class="p-4"><input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+                <td class="p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0">${initials}</div>
+                        <div>
+                            ${isEditing ? `
+                                <input type="text" id="edit-requester-${req.id}" value="${req.requester}" class="inline-edit-input mb-1">
+                                <input type="text" id="edit-dept-${req.id}" value="${req.dept}" class="w-full bg-transparent text-[10px] font-bold uppercase outline-none focus:text-primary transition-colors">
+                            ` : `
+                                <div class="font-bold text-on-surface">${req.requester} <span class="text-[10px] bg-primary/10 text-primary px-1 rounded ml-1">${req.source}</span></div>
+                                <div class="text-xs text-on-surface-variant">${req.dept}</div>
+                            `}
+                        </div>
+                    </div>
+                </td>
+                <td class="p-4">
+                    ${isEditing ? `
+                        <input type="text" id="edit-room-${req.id}" value="${req.roomDetails}" class="inline-edit-input">
+                    ` : `
+                        <div class="font-semibold text-primary">${req.roomDetails}</div>
+                    `}
+                </td>
+                <td class="p-4">
+                    ${isEditing ? `
+                        <input type="text" id="edit-time-${req.id}" value="${req.reqTime}" class="inline-edit-input mb-1">
+                        <input type="text" id="edit-name-${req.id}" value="${req.name}" class="w-full bg-transparent text-[10px] font-bold uppercase outline-none focus:text-primary transition-colors">
+                    ` : `
+                        <div class="font-medium text-on-surface">${req.reqTime}</div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">${req.name}</div>
+                    `}
+                </td>
+                <td class="p-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                        ${isEditing ? `
+                            <button onclick="saveRequest(${req.id})" class="p-2 bg-primary text-on-primary rounded-lg shadow-lg hover:bg-primary-container transition-all">
+                                <span class="material-symbols-outlined text-[18px]">check</span>
+                            </button>
+                            <button onclick="cancelEdit()" class="p-2 text-outline hover:bg-surface-variant rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-[18px]">close</span>
+                            </button>
+                        ` : `
+                            <button onclick="startEdit(${req.id})" class="p-2 text-primary hover:bg-primary/5 rounded-lg transition-all opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                            </button>
+                            <button onclick="updateStatus(${req.id}, 'Pending_Branch_Manager')" class="px-3 py-1.5 bg-primary text-on-primary rounded-lg text-[10px] font-bold shadow hover:bg-primary-container transition-all">
+                                Forward
+                            </button>
+                        `}
+                    </div>
+                </td>
+            </tr>
+            `;
+            reqBody.insertAdjacentHTML('beforeend', rowHTML);
+        });
+    }
+
+    // Inline Edit Logic
+    window.editingReqId = null;
+    window.startEdit = (id) => {
+        window.editingReqId = id;
+        renderRequests();
+    };
+    window.cancelEdit = () => {
+        window.editingReqId = null;
+        renderRequests();
+    };
+    window.saveRequest = (id) => {
+        const newData = {
+            requester: document.getElementById(`edit-requester-${id}`).value,
+            dept: document.getElementById(`edit-dept-${id}`).value,
+            roomDetails: document.getElementById(`edit-room-${id}`).value,
+            reqTime: document.getElementById(`edit-time-${id}`).value,
+            name: document.getElementById(`edit-name-${id}`).value
+        };
+        StateManager.updateRequest(id, newData);
+        window.editingReqId = null;
+        if(window.showToast) window.showToast("Changes saved successfully.");
+    };
+
+    // Messaging Logic
+    function renderTeacherMessages() {
+        const container = document.getElementById('teacher-messages-container');
+        if (!container) return;
+        
+        const messages = StateManager.getMessages();
+        const pending = messages.filter(m => m.status === 'Pending');
+        document.getElementById('msg-count-badge').innerText = pending.length;
+
+        if (pending.length === 0) {
+            container.innerHTML = `<div class="md:col-span-2 p-8 text-center bg-surface-container-low/30 rounded-xl border border-dashed border-outline-variant/30 text-outline italic text-sm">No pending teacher messages.</div>`;
+            return;
+        }
+
+        container.innerHTML = pending.slice().reverse().map(m => `
+            <div class="bg-surface-container-lowest border border-outline-variant/15 rounded-xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-secondary/10 text-secondary rounded-full flex items-center justify-center font-black">${m.sender[0]}</div>
+                        <div>
+                            <p class="text-xs font-black text-primary uppercase tracking-tighter">${m.sender}</p>
+                            <p class="text-[9px] text-outline font-bold uppercase">${new Date(m.timestamp).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 bg-primary/5 text-primary text-[8px] font-black uppercase tracking-widest border border-primary/10 rounded">Teacher Message</span>
+                </div>
+                <p class="text-sm font-medium text-on-surface-variant leading-relaxed">"${m.content}"</p>
+                <div class="flex gap-2 mt-2">
+                    <button onclick="StateManager.updateMessageStatus(${m.id}, 'Approved')" class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-bold text-[10px] uppercase shadow-md hover:bg-primary-container transition-all">موافقة</button>
+                    <button onclick="StateManager.updateMessageStatus(${m.id}, 'Rejected')" class="flex-1 bg-error-container text-on-error-container py-2 rounded-lg font-bold text-[10px] uppercase hover:bg-error transition-all hover:text-white">رفض</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Initialize listeners
+    StateManager.on('RequestsUpdated', () => renderRequests());
+    StateManager.on('MessagesUpdated', () => renderTeacherMessages());
+    
+    // Initial Render
+    renderRequests();
+    renderTeacherMessages();
+
+    window.updateStatus = function(rqId, status) {
+        const storedRequests = JSON.parse(localStorage.getItem('roomRequests')) || [];
+        const index = storedRequests.findIndex(r => r.id === rqId);
+        if(index !== -1) {
+            storedRequests[index].status = status;
+            localStorage.setItem('roomRequests', JSON.stringify(storedRequests));
+            renderRequests();
+            if (window.showToast) window.showToast(`Request ${status === 'Denied' ? 'denied' : 'forwarded to Manager'}.`);
+        }
+    };
+
+    // --- MPR Request Logic ---
+    document.addEventListener('openNewRequest', () => {
+        const modalHtml = `
+            <div id="mpr-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm transition-opacity duration-300">
+                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-md p-8 transform transition-transform duration-300">
+                    <h2 class="text-2xl font-headline font-bold text-slate-900 dark:text-white mb-2">Initiate MPR Request</h2>
+                    <p class="text-slate-500 text-sm mb-6">Multi-Purpose Room requests require separate approval from the Secretary first.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Event Purpose</label>
+                            <input type="text" id="mpr-name" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500" placeholder="e.g. Annual Faculty Gala">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Desired Room</label>
+                            <select id="mpr-room" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+                                <option>Grand Ballroom</option>
+                                <option>Amphitheater A</option>
+                                <option>Rooftop Terrace</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-8">
+                        <button onclick="document.getElementById('mpr-modal').remove()" class="px-6 py-2 text-sm font-bold text-slate-500 hover:text-slate-900">Cancel</button>
+                        <button id="submit-mpr" class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-lg hover:bg-blue-700 transition-all">Submit to Secretary</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        document.getElementById('submit-mpr').addEventListener('click', () => {
+            const name = document.getElementById('mpr-name').value;
+            const room = document.getElementById('mpr-room').value;
+            const user = StateManager.getCurrentUser();
+
+            if (name) {
+                StateManager.createRequest({
+                    source: 'Dean',
+                    name: name,
+                    roomDetails: room,
+                    reqTime: 'Next Available, TBD',
+                    requester: user ? user.name : 'Dean',
+                    dept: 'Administration',
+                    status: 'Pending_Secretary',
+                    type: 'MPR'
+                });
+                document.getElementById('mpr-modal').remove();
+                if (window.showToast) window.showToast("MPR Request sent to Secretary.");
+                renderRequests();
+            } else {
+                alert("Please enter a purpose.");
+            }
+        });
+    });
+
+
+
+
+    // Notification Logic
+    function renderNotifs() {
+        const container = document.getElementById('inbox-container');
+        if(!container) return;
+        const notifs = JSON.parse(localStorage.getItem('head_managerNotifs')) || [];
+        
+        if (notifs.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center bg-surface-container-low/30 rounded-xl border border-dashed border-outline-variant/30 text-outline italic text-sm">No active directives.</div>`;
+            return;
+        }
+
+        container.innerHTML = notifs.slice().reverse().map(n => `
+            <div class="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between gap-4 animate-in slide-in-from-right duration-300">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary shadow-sm">
+                        <span class="material-symbols-outlined text-xl">priority_high</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-primary">${n.text}</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase font-bold mt-0.5">${new Date(n.timestamp).toLocaleTimeString()}</p>
+                    </div>
+                </div>
+                <div class="px-3 py-1 bg-primary text-on-primary text-[10px] font-bold rounded-full">New Directive</div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('clear-notifs-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('head_managerNotifs');
+        renderNotifs();
+    });
+
+    StateManager.on('head_managerNotifsUpdated', () => renderNotifs());
+    renderNotifs();
+
+    // Generic Mockup Handler
+    document.addEventListener('DOMContentLoaded', () => {
+        const toastHTML = `
+            <div id="dev-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-primary text-on-primary font-body font-semibold text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-300">
+                Action coming soon in full release
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', toastHTML);
+        const devToast = document.getElementById('dev-toast');
+
+        function showDevToast(e) {
+            e.preventDefault();
+            let actionName = e.currentTarget.innerText.trim();
+            if (!actionName) {
+                const icon = e.currentTarget.querySelector('.material-symbols-outlined');
+                if (icon) actionName = icon.textContent.trim();
+            }
+            actionName = actionName.split('\n')[0].trim();
+            if (actionName && actionName.length > 25) actionName = "This feature";
+            if (!actionName) actionName = "Action";
+            
+            const pageRole = document.title.split(' - ')[0] || "Module";
+            devToast.innerHTML = `<span class="font-bold opacity-80 mr-2">[${pageRole}]</span> "${actionName}" coming soon.`;
+            devToast.classList.remove('opacity-0');
+            setTimeout(() => devToast.classList.add('opacity-0'), 2500);
+        }
+
+        document.querySelectorAll('a[href="#"]').forEach(el => {
+            el.addEventListener('click', showDevToast);
+        });
+
+        document.querySelectorAll('button:not([id])').forEach(el => {
+            if (!el.getAttribute('onclick') && el.type !== 'submit') {
+                el.addEventListener('click', showDevToast);
+            }
+        });
+    });
+
+</script>
+<script src="../stateManager.js"></script>
+<script src="../components.js"></script>
+</body></html>

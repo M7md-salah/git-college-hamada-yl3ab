@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stellaris Academy - Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#001e40",
+                        "background": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "outline-variant": "#c3c6d1",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#43474f",
+                        "surface-tint": "#3a5f94",
+                        "on-surface": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-container": "#799dd6",
+                        "on-secondary-fixed": "#011d31",
+                        "tertiary": "#381300",
+                        "secondary": "#496177",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-container": "#4d657b",
+                        "inverse-surface": "#2e3132",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface": "#f8f9fa",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#b0c9e3",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#341100",
+                        "primary-container": "#003366",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#592300",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-container-high": "#e7e8e9",
+                        "outline": "#737780",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#c9e2fd",
+                        "primary-fixed": "#d5e3ff",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#31495e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">        @layer utilities {
+            .glass-nav {
+                @apply bg-surface-container-lowest/80 backdrop-blur-[20px];
+            }
+            .hero-gradient {
+                background: linear-gradient(135deg, #003366 0%, #001e40 100%);
+            }
+            .input-clean {
+                @apply bg-surface-variant border-b border-outline-variant/15 outline-none transition-all duration-300 focus:border-primary focus:border-b-2 px-4 py-3 w-full text-on-surface placeholder:text-on-surface-variant/70 font-body rounded-t-DEFAULT;
+            }
+            .btn-scholar-primary {
+                @apply bg-primary text-on-primary font-label font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-primary-container shadow-[0_20px_40px_rgba(0,27,60,0.06)];
+                background: linear-gradient(to bottom, #003366, #001e40);
+            }
+            .ghost-border {
+                @apply border border-outline-variant/15;
+            }
+            .text-display-lg {
+                @apply font-headline font-bold text-5xl md:text-6xl tracking-tight leading-tight;
+            }
+            .text-display-md {
+                @apply font-headline font-bold text-4xl md:text-5xl tracking-tight leading-tight;
+            }
+            .text-title-sm {
+                @apply font-headline font-semibold text-lg;
+            }
+            .text-body-lg {
+                @apply font-body text-lg md:text-xl leading-relaxed text-on-surface/80;
+            }
+            .text-body-md {
+                @apply font-body text-base leading-relaxed text-on-surface/80;
+            }
+            .role-square {
+                @apply w-16 h-16 flex flex-col items-center justify-center text-center p-1 rounded-sm border border-primary/10 transition-all duration-300 hover:shadow-md cursor-pointer bg-white;
+                animation: academicPulse 4s ease-in-out infinite;
+            }
+            .role-square span {
+                @apply text-[10px] font-bold uppercase tracking-wider text-primary leading-tight font-headline;
+            }
+        }
+    
+        @keyframes academicPulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Note: TopNavBar is suppressed on transactional pages like Login/Register based on system rules -->
+<main class="min-h-screen flex flex-col">
+<!-- Split Screen Section -->
+<section class="flex flex-col md:flex-row flex-1 min-h-[870px]">
+<!-- Left Side: Forms (Layered Paper Philosophy) -->
+<div class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 lg:p-24 bg-surface relative z-10">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl p-8 shadow-[0_20px_40px_rgba(0,27,60,0.06)] ghost-border">
+<!-- Form Header -->
+<div class="mb-12">
+<h1 class="text-display-md text-primary mb-4">Welcome</h1>
+<p class="text-body-md">Access your student portal or begin your application process.</p>
+</div>
+<!-- Tabs (Semantic implementation, default to Sign In) -->
+<div class="flex space-x-8 border-b border-surface-container mb-8">
+<button class="text-primary font-headline font-bold text-lg pb-4 border-b-2 border-primary">Sign In</button>
+<button class="text-on-surface-variant/60 font-headline font-medium text-lg pb-4 hover:text-primary transition-colors">Register</button>
+</div>
+<!-- Sign In Form Content -->
+<form class="space-y-6"><div class="mb-8">
+<label class="block font-body text-sm font-semibold text-on-surface-variant mb-4">Select Your Role</label>
+<div class="grid grid-cols-5 gap-3">
+<button class="aspect-square rounded-xl bg-surface-container-lowest border-2 border-primary shadow-sm flex flex-col items-center justify-center p-2 relative" title="Student" type="button">
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined text-primary mb-1 text-2xl">school</span>
+<span class="text-[10px] font-body text-primary font-bold uppercase">Student</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant hover:bg-surface-container transition-all flex flex-col items-center justify-center p-2 group" title="Teacher" type="button">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">history_edu</span>
+<span class="text-[10px] font-body text-on-surface-variant font-medium uppercase">Teacher</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant hover:bg-surface-container transition-all flex flex-col items-center justify-center p-2 group" title="Manager" type="button">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">admin_panel_settings</span>
+<span class="text-[10px] font-body text-on-surface-variant font-medium uppercase">Manager</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant hover:bg-surface-container transition-all flex flex-col items-center justify-center p-2 group" title="Secretary" type="button">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">support_agent</span>
+<span class="text-[10px] font-body text-on-surface-variant font-medium uppercase">Secretary</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant hover:bg-surface-container transition-all flex flex-col items-center justify-center p-2 group" title="Head Manager" type="button">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">shield_person</span>
+<span class="text-[10px] font-body text-on-surface-variant font-medium text-center leading-tight uppercase">Head<br/>Manager</span>
+</button>
+</div>
+</div>
+<div class="space-y-1 relative">
+<label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="email">Academic Email</label>
+<input class="input-clean" id="email" placeholder="student@stellaris.edu" type="email"/>
+</div>
+<div class="space-y-1 relative">
+<label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="password">Password</label>
+<input class="input-clean" id="password" placeholder="••••••••" type="password"/>
+</div>
+<div class="flex items-center justify-between mt-8">
+<a class="text-primary text-sm font-label font-medium hover:underline" href="#">Forgot credentials?</a>
+<button class="btn-scholar-primary flex items-center gap-2" type="button">
+                                Access Portal
+                                <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Registration Form (Hidden by default in this static representation) -->
+<!--
+                    <form class="space-y-6 hidden">
+                        <div class="space-y-1 relative">
+                            <label for="reg-name" class="font-label text-sm font-medium text-on-surface-variant block ml-1">Full Legal Name</label>
+                            <input type="text" id="reg-name" class="input-clean" placeholder="Jane Doe">
+                        </div>
+                        <div class="space-y-1 relative">
+                            <label for="reg-email" class="font-label text-sm font-medium text-on-surface-variant block ml-1">Email Address</label>
+                            <input type="email" id="reg-email" class="input-clean" placeholder="jane@example.com">
+                        </div>
+                        <div class="space-y-1 relative">
+                            <label for="reg-password" class="font-label text-sm font-medium text-on-surface-variant block ml-1">Create Password</label>
+                            <input type="password" id="reg-password" class="input-clean" placeholder="••••••••">
+                        </div>
+                        <div class="mt-8 flex justify-end">
+                            <button type="button" class="btn-scholar-primary">Begin Application</button>
+                        </div>
+                    </form>
+                    -->
+</div>
+</div>
+<!-- Right Side: Imagery (Glass & Gradient overlay) -->
+<div class="hidden md:block w-full md:w-1/2 relative">
+<!-- Fallback gradient if image fails -->
+<div class="absolute inset-0 hero-gradient z-0"></div>
+<img class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80 z-10" data-alt="expansive view of modern college campus with historic stone architecture blending with contemporary glass structures, sunny day with vibrant green lawns and mature oak trees, students walking along pathways" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWHMCt7ndgvCJaj3REVVBsKg--NWySHDtImKeC7cTSJPOpci4V9upItAC9wcRM3HB23udjctWoRNrRfoEij5K_Y6XgCmBJ3mzLQsOErPqRbwvzHJG0NSzb4PllHdD6YLmnOFjkFUIbvWIPj3fHIfQxLo-_rKabptg4vc9e6CLOZu-TC9cKPovLO1OsU0VL1yKiuYqK0_bsUd6Job-CL_V6m9sVcSAIIP9_CRMBK-cPoIgaopj2YJmeeDI0Gzxi5k58B6o2B_oMIBb7"/>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px] z-20"></div>
+<!-- Editorial content over image -->
+<div class="absolute bottom-16 left-16 right-16 z-30">
+<div class="bg-surface-container-lowest/10 backdrop-blur-md p-8 rounded-xl border border-white/20">
+<p class="text-on-tertiary font-headline font-light text-2xl leading-relaxed">
+                            "The pursuit of knowledge is not merely a transaction, but a lifelong endeavor cultivated within an environment of excellence."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- About Us Section (Tonal Shift) -->
+<section class="bg-surface-container-low py-24 px-8 md:px-16 lg:px-24">
+<div class="max-w-4xl mx-auto text-center space-y-8">
+<h2 class="text-display-md text-primary">The Living Archive</h2>
+<p class="text-body-lg text-on-surface-variant">
+                    Stellaris Academy represents a confluence of heritage and innovation. We are committed to fostering an intellectual community where rigorous academic inquiry meets modern societal challenges. Our campus is more than a location; it is a curated editorial experience designed to inspire the next generation of thought leaders through intentional design, expansive resources, and a dedication to the highest standards of scholarship.
+                </p>
+</div>
+</section>
+</main>
+<!-- Footer Component Execution -->
+<footer class="bg-[#f8f9fa] dark:bg-slate-950 w-full py-12 tonal-shift bg-[#f3f4f5] dark:bg-slate-900 flat no-shadows">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="font-['Manrope'] font-bold text-[#001e40] dark:text-white">
+                Stellaris Academy
+            </div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-['Inter'] text-sm text-slate-500 hover:text-[#001e40] dark:hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-sm text-slate-500 hover:text-[#001e40] dark:hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-sm text-slate-500 hover:text-[#001e40] dark:hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Accessibility</a>
+<a class="font-['Inter'] text-sm text-slate-500 hover:text-[#001e40] dark:hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+</nav>
+<div class="font-['Inter'] text-sm text-[#001e40] dark:text-blue-400">
+                © 2024 Stellaris Academy. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>

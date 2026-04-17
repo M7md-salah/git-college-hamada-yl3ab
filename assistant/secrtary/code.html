@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Secretary Portal Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "surface-dim": "#d9dadb",
+                      "tertiary": "#381300",
+                      "surface-variant": "#e1e3e4",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#3a5f94",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#191c1d",
+                      "primary-fixed-dim": "#a7c8ff",
+                      "tertiary-fixed": "#ffdbca",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "background": "#f8f9fa",
+                      "surface-container-highest": "#e1e3e4",
+                      "primary": "#001e40",
+                      "on-surface": "#191c1d",
+                      "tertiary-fixed-dim": "#ffb690",
+                      "on-secondary-fixed": "#011d31",
+                      "surface-bright": "#f8f9fa",
+                      "error-container": "#ffdad6",
+                      "primary-fixed": "#d5e3ff",
+                      "secondary-fixed-dim": "#b0c9e3",
+                      "outline-variant": "#c3c6d1",
+                      "on-primary-container": "#799dd6",
+                      "outline": "#737780",
+                      "on-tertiary-fixed": "#341100",
+                      "secondary-container": "#c9e2fd",
+                      "on-secondary-fixed-variant": "#31495e",
+                      "on-secondary-container": "#4d657b",
+                      "surface-container": "#edeeef",
+                      "surface": "#f8f9fa",
+                      "secondary-fixed": "#cce5ff",
+                      "on-surface-variant": "#43474f",
+                      "surface-container-low": "#f3f4f5",
+                      "on-tertiary-container": "#d8885c",
+                      "on-tertiary-fixed-variant": "#723610",
+                      "tertiary-container": "#592300",
+                      "on-primary-fixed-variant": "#1f477b",
+                      "on-primary-fixed": "#001b3c",
+                      "surface-container-high": "#e7e8e9",
+                      "primary-container": "#003366",
+                      "inverse-surface": "#2e3132",
+                      "secondary": "#496177",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#a7c8ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Manrope"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    }
+</script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex selection:bg-primary selection:text-on-primary">
+<!-- SideNavBar (Desktop) -->
+<nav id="global-sidebar"></nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-64 w-full relative">
+<!-- Teacher Communication Feed (NEW) -->
+<section id="teacher-comm-feed" class="mb-12 animate-in slide-in-from-left duration-500">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-headline font-bold text-xl text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary">analytics</span> Teacher-Dean Comm Log
+        </h3>
+        <span id="comm-log-badge" class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded border border-primary/20 uppercase tracking-widest">Live Monitoring</span>
+    </div>
+    <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/15 overflow-hidden shadow-sm">
+        <table class="w-full text-left">
+            <thead class="bg-surface-container-low/50 font-label text-[10px] uppercase tracking-wider text-on-surface-variant border-b border-outline-variant/10">
+                <tr>
+                    <th class="p-4">Sender</th>
+                    <th class="p-4">Request Content</th>
+                    <th class="p-4">Decision Status</th>
+                    <th class="p-4 capitalize">Time</th>
+                </tr>
+            </thead>
+            <tbody id="comm-feed-body" class="text-xs font-medium">
+                <!-- Dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm transition-colors">
+<div class="flex items-center gap-4 md:gap-8">
+<div class="text-lg md:text-xl font-bold tracking-tight text-primary dark:text-blue-50 font-headline"><a href="#">Secretary Portal</a></div>
+<nav class="hide-on-mobile flex gap-6 font-manrope text-sm font-medium">
+<a class="text-primary dark:text-white font-bold border-b-2 border-primary pb-1 transition-all duration-200" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors pb-1 border-b-2 border-transparent" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button id="theme-toggle" class="text-primary dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">light_mode</span>
+</button>
+<div class="hide-on-mobile relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-variant/50 border-b border-outline-variant text-on-surface text-sm pl-9 pr-4 py-1.5 focus:border-b-primary focus:ring-0 transition-colors w-48 font-body rounded-t-md" placeholder="Search..." type="text"/>
+</div>
+<button class="text-primary dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span id="sec-notif-dot" class="absolute top-2 right-2 w-1.5 h-1.5 bg-error rounded-full hidden"></span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+    <img alt="Secretary Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsSnLlU2eo3y6RZmezm_S4hQeblEBhQ_id4wKxtmq-E4geKheH_O7DykgsRfpuRAvZFQPZfDhDIjLL9OOg2QZJJx7t6jIuOyCHeEA8eKF9G_r31Y3fKTMCRqG0US6m5f5Sly7ryt8XqXFCT7vvS1Pra0TXoXprTL22e4IyGCHCS_FGU3K62HTODiXTkRXVB0Csy2mEi_S0XsSogeTXEPKKJwdcN5eef3oRUoTXXFXDPtuFwQfArJfnKhO41SOE85KZIB-xWX7aNK0O"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 pt-20 p-4 md:p-8 lg:p-12 bg-surface transition-all duration-300">
+<div id="view-dashboard" class="page-view animate-in fade-in duration-300 flex flex-col gap-8 md:gap-12">
+<!-- Welcome Banner -->
+<section class="relative rounded-xl overflow-hidden bg-surface-container-lowest p-6 md:p-12 shadow-2xl border border-outline-variant/15 group">
+<!-- Decorative subtle gradient background -->
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary-fixed-dim/20 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-60"></div>
+<div class="relative z-10 max-w-2xl">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container font-label text-[10px] font-bold rounded-full mb-4 tracking-widest uppercase">Secretary of Operations</span>
+<h2 class="text-2xl md:text-3xl font-headline font-black text-primary mb-3 leading-tight tracking-tight user-name-display truncate">Welcome back, Sarah.</h2>
+<p class="text-sm md:text-base font-body text-on-surface-variant mb-6 leading-relaxed">Central Administrative Hub • Station 427</p>
+<div class="flex gap-4">
+    <button id="open-dean-req-btn" class="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-bold text-sm shadow-xl hover:bg-primary-container transition-all flex items-center gap-2 active:scale-95">
+        <span class="material-symbols-outlined text-sm">send</span> New Request to Dean
+    </button>
+</div>
+</div>
+</section>
+    <!-- Navigation Bento (Replacement for Form) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="#incoming-mprs" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15 shadow-sm hover:shadow-md transition-all group">
+            <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-2xl">inbox</span>
+            </div>
+            <h3 class="font-headline font-bold text-xl text-primary mb-2">Review Requests</h3>
+            <p class="text-on-surface-variant text-sm">Validate and forward MPR bookings to the Branch Manager.</p>
+        </a>
+        <a href="#guidelines" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15 shadow-sm hover:shadow-md transition-all group">
+            <div class="w-12 h-12 bg-secondary/5 rounded-full flex items-center justify-center text-secondary mb-4 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-2xl">rule</span>
+            </div>
+            <h3 class="font-headline font-bold text-xl text-primary mb-2">Campus Guidelines</h3>
+            <p class="text-on-surface-variant text-sm">Review safety and facility usage policies for the center.</p>
+        </a>
+        <a href="#help-center" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15 shadow-sm hover:shadow-md transition-all group">
+            <div class="w-12 h-12 bg-tertiary/5 rounded-full flex items-center justify-center text-tertiary mb-4 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-2xl">help</span>
+            </div>
+            <h3 class="font-headline font-bold text-xl text-primary mb-2">Help Center</h3>
+            <p class="text-on-surface-variant text-sm">Get support or report facility issues directly to the team.</p>
+        </a>
+    </div>
+
+<!-- Recent Requests List -->
+<section class="mt-4">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline font-bold text-xl text-primary tracking-tight">My Recent Requests</h3>
+<a class="font-label text-sm font-semibold text-primary hover:text-primary-container flex items-center gap-1 transition-colors" href="#">
+                        View All <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="flex flex-col gap-3" id="recent-requests-container">
+<!-- Dynamically populated by JS -->
+</div>
+</section>
+</div>
+</main>
+</div>
+<script>
+    // --- New Request to Dean Flow ---
+    const openDeanBtn = document.getElementById('open-dean-req-btn');
+    if (openDeanBtn) {
+        openDeanBtn.addEventListener('click', () => {
+            const modalHtml = `
+                <div id="dean-req-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-md p-8 border border-outline-variant/20 animate-in zoom-in slide-in-from-bottom-4 duration-300">
+                        <h2 class="text-2xl font-headline font-bold text-primary mb-2 italic">Institutional Directive</h2>
+                        <p class="text-on-surface-variant text-sm mb-6 font-medium">Submitting an administrative request for the Dean's review.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-outline uppercase tracking-widest mb-1">Purpose of Request</label>
+                                <input type="text" id="dean-req-purpose" class="w-full bg-surface-variant/30 border-b border-primary px-4 py-3 text-sm rounded-t-lg focus:ring-0 outline-none" placeholder="e.g. Budget Reallocation for Labs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-outline uppercase tracking-widest mb-1">Urgency Level</label>
+                                <select id="dean-req-priority" class="w-full bg-surface-variant/30 border-b border-primary px-4 py-3 text-sm rounded-t-lg focus:ring-0 outline-none">
+                                    <option value="Normal">Normal Review</option>
+                                    <option value="Urgent" class="text-error font-bold text-red-600">Urgent (Immediate)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 mt-8">
+                            <button onclick="document.getElementById('dean-req-modal').remove()" class="px-6 py-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">Cancel</button>
+                            <button id="final-submit-dean" class="px-8 py-2 bg-primary text-on-primary rounded-lg text-sm font-bold shadow-lg hover:shadow-xl hover:bg-primary-container transition-all active:scale-95">Send to Dean</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            document.getElementById('final-submit-dean').addEventListener('click', () => {
+                const purpose = document.getElementById('dean-req-purpose').value;
+                const priority = document.getElementById('dean-req-priority').value;
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+
+                if (purpose) {
+                    // 1. Create Request
+                    const existing = JSON.parse(localStorage.getItem('roomRequests')) || [];
+                    const newReq = {
+                        id: Date.now(),
+                        source: 'Secretary',
+                        name: purpose,
+                        roomDetails: 'Admin Office',
+                        reqTime: new Date().toLocaleDateString(),
+                        requester: user ? user.name : 'Secretary Sarah',
+                        dept: 'Administration',
+                        status: 'Pending_Dean',
+                        priority: priority,
+                        type: 'Administrative'
+                    };
+                    existing.push(newReq);
+                    localStorage.setItem('roomRequests', JSON.stringify(existing));
+
+                    // 2. Automated Notifications
+                    // Notify Dean (head_manager)
+                    const deanNotifs = JSON.parse(localStorage.getItem('head_managerNotifs')) || [];
+                    deanNotifs.push({
+                        id: Date.now()+1,
+                        text: `New Administrative Request from Secretary: ${purpose}`,
+                        timestamp: new Date().toISOString(),
+                        read: false
+                    });
+                    localStorage.setItem('head_managerNotifs', JSON.stringify(deanNotifs));
+
+                    // Notify Branch Manager (manager) - Exact phrasing required
+                    const managerNotifs = JSON.parse(localStorage.getItem('managerNotifs')) || [];
+                    managerNotifs.push({
+                        id: Date.now()+2,
+                        text: `Notification: A new request has been submitted by the Secretary to the Dean for review.`,
+                        timestamp: new Date().toISOString(),
+                        read: false
+                    });
+                    localStorage.setItem('managerNotifs', JSON.stringify(managerNotifs));
+
+                    // 3. UI Feedback
+                    document.getElementById('dean-req-modal').remove();
+                    if (window.showToast) {
+                        window.showToast("Request successfully sent to the Dean");
+                    } else {
+                        alert("Request successfully sent to the Dean");
+                    }
+                    
+                    if (window.renderRequests) window.renderRequests();
+                } else {
+                    alert('Please enter the purpose of the request.');
+                }
+            });
+        });
+    }
+
+    // Handle Form submission
+    const submitBtn = document.getElementById('submit-req-btn');
+    if (submitBtn) {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        submitBtn.addEventListener('click', () => {
+            const name = document.getElementById('req-name').value;
+            const room = document.getElementById('req-room').value || 'Unassigned';
+            const date = document.getElementById('req-date').value;
+            const start = document.getElementById('req-start').value || 'TBD';
+            const end = document.getElementById('req-end').value || 'TBD';
+
+            if(!name || !date) {
+                alert('Please fill out Name and Date');
+                return;
+            }
+
+            const existing = JSON.parse(localStorage.getItem('roomRequests')) || [];
+            existing.push({
+                id: Date.now(),
+                source: 'Secretary',
+                name: name,
+                roomDetails: room,
+                reqTime: `${date}, ${start} - ${end}`,
+                requester: user ? user.name : 'Secretary Sarah',
+                dept: 'Administration',
+                status: 'Pending_Branch_Manager', // Secretary requests go straight to Manager
+                type: 'MPR'
+            });
+            localStorage.setItem('roomRequests', JSON.stringify(existing));
+            if (window.showToast) window.showToast('Request submitted to Branch Manager!');
+            
+            // clear form
+            document.getElementById('req-name').value = '';
+            document.getElementById('req-date').value = '';
+            document.getElementById('req-start').value = '';
+            document.getElementById('req-end').value = '';
+            
+            renderRequests();
+        });
+    }
+
+    function renderRequests() {
+        const existing = JSON.parse(localStorage.getItem('roomRequests')) || [];
+
+        // 1. Dedicated View for Incoming MPRs
+        let approvalView = document.getElementById('view-incoming-mprs');
+        if (!approvalView) {
+            approvalView = document.createElement('div');
+            approvalView.id = 'view-incoming-mprs';
+            approvalView.className = 'page-view hidden animate-in fade-in duration-300';
+            document.querySelector('main').appendChild(approvalView);
+        }
+
+        const pendingMPRs = existing.filter(r => r.status === 'Pending_Secretary');
+        approvalView.innerHTML = `
+            <div class="max-w-4xl mx-auto py-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-headline font-bold text-primary">Incoming MPR Requests</h2>
+                        <p class="text-on-surface-variant mt-1">Requests initiated by the Dean requiring administrative validation.</p>
+                    </div>
+                    <span class="bg-primary/10 text-primary px-4 py-1 rounded-full font-bold text-sm">${pendingMPRs.length} New</span>
+                </div>
+                <div class="flex flex-col gap-4">
+                    ${pendingMPRs.length === 0 
+                        ? '<div class="p-12 text-center bg-surface-container-low rounded-xl text-on-surface-variant italic border-2 border-dashed border-outline-variant/20">No requests awaiting validation.</div>'
+                        : pendingMPRs.map(req => `
+                            <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/15 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined text-2xl">stars</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-xl text-primary">${req.name}</h4>
+                                        <div class="text-sm text-on-surface-variant flex flex-wrap gap-4 mt-1">
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> Dean</span>
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">meeting_room</span> ${req.roomDetails}</span>
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> ${req.reqTime}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button onclick="updateStatus(${req.id}, 'Denied')" class="px-6 py-2 text-sm font-bold text-error hover:bg-error/5 hover:text-red-700 rounded-lg transition-colors">Reject</button>
+                                    <button onclick="updateStatus(${req.id}, 'Pending_Branch_Manager')" class="px-8 py-2 bg-primary text-on-primary text-sm font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-primary-container active:scale-95 transition-all">Forward to Manager</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                </div>
+            </div>
+        `;
+
+
+        // 3. Inbox Notifications
+        let inboxSection = document.getElementById('inbox-section');
+        if (!inboxSection) {
+            inboxSection = document.createElement('section');
+            inboxSection.id = 'inbox-section';
+            inboxSection.className = 'mt-8 mb-8';
+            const recentReqSection = document.querySelector('section.mt-4');
+            if (recentReqSection) {
+                recentReqSection.parentNode.insertBefore(inboxSection, recentReqSection);
+            }
+        }
+
+        const secNotifs = JSON.parse(localStorage.getItem('secretaryNotifs')) || [];
+        if (secNotifs.length > 0) {
+            inboxSection.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-headline font-bold text-xl text-primary tracking-tight">Inbox Notifications</h3>
+                    <button onclick="clearSecNotifs()" class="text-xs text-primary font-bold hover:underline">Clear All</button>
+                </div>
+                <div class="flex flex-col gap-3">
+                    ${secNotifs.slice().reverse().map(n => `
+                        <div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 text-sm text-primary font-medium tracking-tight">
+                                <span class="material-symbols-outlined text-primary">mark_email_unread</span>
+                                ${n.text}
+                            </div>
+                            <span class="text-xs text-on-surface-variant font-medium">${new Date(n.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            // Trigger bell notification visually if unread
+            const bell = document.querySelector('header [data-icon="notifications"]');
+            if (bell && !document.getElementById('sec-notif-dot')) {
+                bell.parentElement.classList.add('relative');
+                bell.insertAdjacentHTML('afterend', '<span id="sec-notif-dot" class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full animate-pulse"></span>');
+            }
+        } else {
+            inboxSection.innerHTML = '';
+            const dot = document.getElementById('sec-notif-dot');
+            if (dot) dot.remove();
+        }
+    }
+
+
+    window.updateStatus = (id, newStatus) => {
+        const existing = JSON.parse(localStorage.getItem('roomRequests')) || [];
+        const idx = existing.findIndex(r => r.id === id);
+        if (idx !== -1) {
+            existing[idx].status = newStatus;
+            localStorage.setItem('roomRequests', JSON.stringify(existing));
+            renderRequests();
+            if (window.showToast) window.showToast(`Request ${newStatus === 'Denied' ? 'denied' : 'forwarded to Manager'}.`);
+        }
+    };
+
+    window.clearSecNotifs = function() {
+        localStorage.removeItem('secretaryNotifs');
+        renderRequests();
+    };
+
+    renderRequests();
+    // Messaging Logic (Feed)
+    function renderTeacherMessages() {
+        const feedBody = document.getElementById('comm-feed-body');
+        if (!feedBody) return;
+        
+        const messages = StateManager.getMessages();
+        if (messages.length === 0) {
+            feedBody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-on-surface-variant italic">No teacher communications recorded.</td></tr>';
+            return;
+        }
+
+        feedBody.innerHTML = messages.slice().reverse().map(m => {
+            let statusColor = 'bg-surface-variant text-on-surface-variant';
+            if (m.status === 'Approved') statusColor = 'bg-primary text-on-primary';
+            if (m.status === 'Rejected') statusColor = 'bg-error text-on-error';
+            if (m.status === 'Pending') statusColor = 'bg-primary/10 text-primary border border-primary/20';
+
+            return `
+                <tr class="hover:bg-primary/5 border-b border-outline-variant/10 transition-colors">
+                    <td class="p-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-secondary/10 text-secondary rounded-full flex items-center justify-center font-black text-[10px]">${m.sender[0]}</div>
+                            <span class="font-bold text-primary truncate max-w-[100px]">${m.sender}</span>
+                        </div>
+                    </td>
+                    <td class="p-4 text-on-surface-variant line-clamp-1 max-w-[200px]" title="${m.content}">${m.content}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-0.5 rounded font-bold uppercase tracking-tighter ${statusColor}" style="font-size: 8px;">${m.status === 'Approved' ? 'موافقة' : (m.status === 'Rejected' ? 'رفض' : m.status)}</span>
+                    </td>
+                    <td class="p-4 text-[10px] text-outline font-bold">${new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // Initialize listeners
+    StateManager.on('MessagesUpdated', renderTeacherMessages);
+    
+    // Initial Render
+    renderRequests();
+    renderTeacherMessages();
+
+
+    // Generic Mockup Handler
+    document.addEventListener('DOMContentLoaded', () => {
+        const toastHTML = `
+            <div id="dev-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-primary text-on-primary font-body font-semibold text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-300">
+                Action coming soon in full release
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', toastHTML);
+        const devToast = document.getElementById('dev-toast');
+
+        function showDevToast(e) {
+            e.preventDefault();
+            let actionName = e.currentTarget.innerText.trim();
+            if (!actionName) {
+                const icon = e.currentTarget.querySelector('.material-symbols-outlined');
+                if (icon) actionName = icon.textContent.trim();
+            }
+            actionName = actionName.split('\n')[0].trim();
+            if (actionName && actionName.length > 25) actionName = "This feature";
+            if (!actionName) actionName = "Action";
+            
+            const pageRole = document.title.split(' - ')[0] || "Module";
+            devToast.innerHTML = `<span class="font-bold opacity-80 mr-2">[${pageRole}]</span> "${actionName}" coming soon.`;
+            devToast.classList.remove('opacity-0');
+            setTimeout(() => devToast.classList.add('opacity-0'), 2500);
+        }
+
+        document.querySelectorAll('a[href="#"]').forEach(el => {
+            el.addEventListener('click', showDevToast);
+        });
+
+        document.querySelectorAll('button:not([id])').forEach(el => {
+            if (!el.getAttribute('onclick') && el.type !== 'submit') {
+                el.addEventListener('click', showDevToast);
+            }
+        });
+    });
+
+</script>
+<script src="../stateManager.js"></script>
+<script src="../components.js"></script>
+</body></html>

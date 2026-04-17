@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campus Archive - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary-container": "#d8885c",
+                      "on-secondary-fixed": "#011d31",
+                      "surface-container-low": "#f3f4f5",
+                      "surface-bright": "#f8f9fa",
+                      "primary-container": "#003366",
+                      "tertiary": "#381300",
+                      "surface-dim": "#d9dadb",
+                      "on-surface-variant": "#43474f",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#723610",
+                      "on-primary-container": "#799dd6",
+                      "surface": "#f8f9fa",
+                      "inverse-surface": "#2e3132",
+                      "primary-fixed-dim": "#a7c8ff",
+                      "outline-variant": "#c3c6d1",
+                      "surface-container-high": "#e7e8e9",
+                      "on-tertiary-fixed": "#341100",
+                      "tertiary-fixed": "#ffdbca",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#edeeef",
+                      "on-secondary-fixed-variant": "#31495e",
+                      "secondary-fixed-dim": "#b0c9e3",
+                      "primary-fixed": "#d5e3ff",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-error-container": "#93000a",
+                      "background": "#f8f9fa",
+                      "on-primary-fixed": "#001b3c",
+                      "secondary": "#496177",
+                      "error": "#ba1a1a",
+                      "on-background": "#191c1d",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#a7c8ff",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed": "#cce5ff",
+                      "tertiary-fixed-dim": "#ffb690",
+                      "surface-tint": "#3a5f94",
+                      "secondary-container": "#c9e2fd",
+                      "outline": "#737780",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#1f477b",
+                      "tertiary-container": "#592300",
+                      "primary": "#001e40",
+                      "on-surface": "#191c1d",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#4d657b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Manrope"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            font-family: theme('fontFamily.body');
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: theme('fontFamily.headline');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+      </style>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    }
+</script>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm border-b border-outline-variant/10 transition-colors">
+<div class="flex items-center gap-4 md:gap-8">
+<div class="text-lg md:text-xl font-bold tracking-tight text-blue-950 dark:text-blue-50"><a href="#">Campus Archive</a></div>
+<nav class="hide-on-mobile flex gap-6 font-manrope text-sm font-medium">
+<a class="text-blue-950 dark:text-white font-bold border-b-2 border-primary pb-1 transition-all duration-200" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors pb-1 border-b-2 border-transparent" href="#">Admissions</a>
+</nav>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button id="theme-toggle" class="text-blue-950 dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">light_mode</span>
+</button>
+<div class="hide-on-mobile relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-variant/50 border-b border-outline-variant text-on-surface text-sm pl-9 pr-4 py-1.5 focus:border-b-primary focus:ring-0 transition-colors w-48 font-body rounded-t-md" placeholder="Search..." type="text"/>
+</div>
+<button class="text-blue-950 dark:text-blue-200 hover:bg-surface-container-high/50 w-10 h-10 rounded-full flex items-center justify-center transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 h-1.5 w-1.5 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+    <img alt="Student Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKKETqVcarc4pm7taAg-3gMc6y01nXks6pJayg4A3jKpbZE7jyyy3T4Q2NRrfug4hwHXpN97Htit_ilfXnhnbQQ4opkDaaH4fA8HdzE4jBSbhYuaPMAgQ-YtV-1wg7SnKzUNm-tPVG8n5-4Uagy5sMvLKtZnUtdnAleQ30qpLX6gsXrwywsxLlqR7KfHKheIj1T60EKVo5YZWDSWhC6UordWQR8qqHcu9eEpz-_q-vndrncUlEjnGky0PdtEuB0ba4OxMEjGuBnXGV"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar -->
+<nav id="global-sidebar"></nav>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-4 md:p-8 lg:p-12 bg-surface transition-all duration-300">
+<div id="view-dashboard" class="page-view animate-in fade-in duration-300">
+<header class="mb-8 md:mb-12">
+<h1 class="text-2xl md:text-4xl font-extrabold text-primary tracking-tight mb-2 font-headline user-name-display truncate">Welcome back, Alex.</h1>
+<p class="text-on-surface-variant font-body text-sm md:text-lg max-w-2xl">Academic Progress Hub • Spring Term 2026</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column (Wider) -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<!-- Today's Classes Summary (Bento-ish) -->
+<section class="bg-surface-container-lowest rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center relative overflow-hidden shadow-2xl border border-outline-variant/10">
+<div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-bl from-secondary-container/30 to-transparent pointer-events-none"></div>
+<div class="flex-1 z-10 w-full overflow-hidden">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-widest mb-4 font-label">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                Live Session
+                            </span>
+<h2 class="text-xl md:text-3xl font-black text-primary font-headline mb-2 tracking-tight truncate">Advanced Quantum Mechanics</h2>
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 text-on-surface-variant font-body text-xs md:text-sm mt-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base md:text-lg">schedule</span>
+<span>10:30 AM - 11:45 AM</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base md:text-lg">location_on</span>
+<span class="truncate">Science Building, Room 402</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-auto shrink-0 z-10">
+<button class="w-full md:w-auto bg-primary text-on-primary px-6 py-3 rounded-md font-semibold text-sm hover:bg-primary-container transition-colors shadow-[0_8px_16px_rgba(0,30,64,0.1)]">
+                                View Syllabus
+                            </button>
+</div>
+</section>
+<!-- Weekly Schedule -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h3 class="text-2xl font-bold text-primary font-headline">Weekly Schedule</h3>
+<a href="#master-schedule" class="text-primary text-sm font-semibold hover:text-primary-container flex items-center gap-1 transition-colors">
+                                Month View <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div id="grid-schedule-container">
+    <!-- StateManager.renderGlobalSchedule will populate this -->
+</div>
+</section>
+
+</div>
+<!-- Right Column (Sidebar) -->
+<div class="lg:col-span-4 flex flex-col gap-8">
+<!-- Announcements -->
+<section class="bg-surface-container-low rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-8xl">campaign</span>
+</div>
+<h3 class="text-lg font-bold text-primary font-headline mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">notifications_active</span>
+                            Announcements
+                        </h3>
+<div class="flex flex-col gap-4 relative z-10">
+<!-- Alert Item -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border-l-4 border-tertiary shadow-sm">
+<div class="text-xs font-semibold text-tertiary mb-1 uppercase tracking-wide">Action Required</div>
+<h4 class="font-bold text-on-surface text-sm mb-1">Spring Registration Opens</h4>
+<p class="text-on-surface-variant text-xs font-body line-clamp-2">Priority registration begins next Monday. Ensure all advising holds are cleared.</p>
+</div>
+<!-- Normal Item -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/15 hover:border-primary/30 transition-colors">
+<div class="text-xs font-medium text-outline mb-1">Yesterday</div>
+<h4 class="font-bold text-on-surface text-sm mb-1">Library Hours Extended</h4>
+<p class="text-on-surface-variant text-xs font-body line-clamp-2">The main library will now remain open until 2:00 AM during midterms.</p>
+</div>
+</div>
+<button class="mt-6 text-primary text-sm font-semibold hover:text-primary-container transition-colors w-full text-center">
+                            View All Announcements
+                        </button>
+</section>
+<!-- Academic Progress (Visual Element) -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/10">
+<h3 class="text-lg font-bold text-primary font-headline mb-4">Term Progress</h3>
+<div class="flex items-end justify-between mb-2">
+<span class="text-3xl font-extrabold text-primary font-headline">Week 7</span>
+<span class="text-sm text-on-surface-variant font-medium">of 14</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mt-4">
+<div class="bg-primary h-full rounded-full" style="width: 50%;"></div>
+</div>
+<div class="mt-6 flex justify-between items-center text-sm">
+<span class="text-on-surface-variant font-medium">Midterms approaching</span>
+<a class="text-primary font-semibold hover:underline decoration-primary/30 underline-offset-4" href="#">Academic Calendar</a>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+    // Theme toggle is handled globally in components.js if id="theme-toggle" exists
+
+    // Master Schedule integration
+    window.renderSchedule = function() {
+        const schedule = StateManager.getSchedule();
+        StateManager.renderGlobalSchedule('grid-schedule-container');
+
+        // Dynamic "Up Next" logic (First valid entry found)
+        const upNextTitle = document.querySelector('section h2');
+        const upNextTime = document.querySelector('section .text-on-surface-variant span:nth-child(2)');
+        const upNextRoom = document.querySelector('section .text-on-surface-variant div:last-child span:last-child');
+        
+        const firstKey = Object.keys(schedule)[0];
+        if (firstKey && schedule[firstKey]) {
+            const next = schedule[firstKey];
+            if (upNextTitle) upNextTitle.innerText = next.title;
+            if (upNextRoom) upNextRoom.innerText = next.room;
+            if (upNextTime) upNextTime.innerText = firstKey.toUpperCase().replace('-', ' @ ');
+        }
+    }
+
+    StateManager.on('ScheduleUpdated', () => window.renderSchedule());
+    window.renderSchedule();
+
+
+    // Generic Mockup Handler
+    document.addEventListener('DOMContentLoaded', () => {
+        const toastHTML = `
+            <div id="dev-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-primary text-on-primary font-body font-semibold text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-300">
+                Action coming soon in full release
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', toastHTML);
+        const devToast = document.getElementById('dev-toast');
+
+        function showDevToast(e) {
+            e.preventDefault();
+            let actionName = e.currentTarget.innerText.trim();
+            if (!actionName) {
+                const icon = e.currentTarget.querySelector('.material-symbols-outlined');
+                if (icon) actionName = icon.textContent.trim();
+            }
+            actionName = actionName.split('\n')[0].trim();
+            if (actionName && actionName.length > 25) actionName = "This feature";
+            if (!actionName) actionName = "Action";
+            
+            const pageRole = document.title.split(' - ')[0] || "Module";
+            devToast.innerHTML = `<span class="font-bold opacity-80 mr-2">[${pageRole}]</span> "${actionName}" coming soon.`;
+            devToast.classList.remove('opacity-0');
+            setTimeout(() => devToast.classList.add('opacity-0'), 2500);
+        }
+
+        document.querySelectorAll('a[href="#"]').forEach(el => {
+            el.addEventListener('click', showDevToast);
+        });
+
+        document.querySelectorAll('button:not([id])').forEach(el => {
+            if (!el.getAttribute('onclick') && el.type !== 'submit') {
+                el.addEventListener('click', showDevToast);
+            }
+        });
+    });
+</script>
+<script src="../stateManager.js"></script>
+<script src="../components.js"></script>
+</body></html>

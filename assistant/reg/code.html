@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stellaris Academy - Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#001e40",
+                        "background": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "outline-variant": "#c3c6d1",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#43474f",
+                        "surface-tint": "#3a5f94",
+                        "on-surface": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-container": "#799dd6",
+                        "on-secondary-fixed": "#011d31",
+                        "tertiary": "#381300",
+                        "secondary": "#496177",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-container": "#4d657b",
+                        "inverse-surface": "#2e3132",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface": "#f8f9fa",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#b0c9e3",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#341100",
+                        "primary-container": "#003366",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#592300",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-container-high": "#e7e8e9",
+                        "outline": "#737780",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#c9e2fd",
+                        "primary-fixed": "#d5e3ff",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#31495e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">        @layer utilities {
+            .glass-nav {
+                @apply bg-surface-container-lowest/80 backdrop-blur-[20px];
+            }
+            .hero-gradient {
+                background: linear-gradient(135deg, #003366 0%, #001e40 100%);
+            }
+            .input-clean {
+                @apply bg-surface-variant border-b border-outline-variant/15 outline-none transition-all duration-300 focus:border-primary focus:border-b-2 px-4 py-3 w-full text-on-surface placeholder:text-on-surface-variant/70 font-body rounded-t-DEFAULT;
+            }
+            .btn-scholar-primary {
+                @apply bg-primary text-on-primary font-label font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-primary-container shadow-[0_20px_40px_rgba(0,27,60,0.06)];
+                background: linear-gradient(to bottom, #003366, #001e40);
+            }
+            .ghost-border {
+                @apply border border-outline-variant/15;
+            }
+            .text-display-lg {
+                @apply font-headline font-bold text-5xl md:text-6xl tracking-tight leading-tight;
+            }
+            .text-display-md {
+                @apply font-headline font-bold text-4xl md:text-5xl tracking-tight leading-tight;
+            }
+            .text-title-sm {
+                @apply font-headline font-semibold text-lg;
+            }
+            .text-body-lg {
+                @apply font-body text-lg md:text-xl leading-relaxed text-on-surface/80;
+            }
+            .text-body-md {
+                @apply font-body text-base leading-relaxed text-on-surface/80;
+            }
+            .role-square {
+                @apply w-24 h-24 flex flex-col items-center justify-center text-center p-2 rounded-xl border border-primary/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer bg-white dark:bg-surface-container-high;
+            }
+            .role-square span:not(.material-symbols-outlined) {
+                @apply text-xs font-black uppercase tracking-wider text-primary dark:text-primary-fixed leading-tight font-headline;
+            }
+            .role-square .material-symbols-outlined {
+                @apply text-3xl mb-1 text-primary dark:text-primary-fixed;
+            }
+        }
+    
+        @keyframes academicPulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }</style>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    }
+</script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Note: TopNavBar is suppressed on transactional pages like Login/Register based on system rules -->
+<main class="min-h-screen flex flex-col">
+<!-- Split Screen Section -->
+<section class="flex flex-col md:flex-row flex-1 min-h-[870px]">
+<!-- Left Side: Forms (Layered Paper Philosophy) -->
+<div class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 lg:p-24 bg-surface relative z-10">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl p-8 shadow-[0_20px_40px_rgba(0,27,60,0.06)] ghost-border">
+<!-- Form Header -->
+<div class="mb-8">
+    <h1 class="text-3xl md:text-5xl font-headline font-black text-primary mb-4 tracking-tighter uppercase">Stellaris Academy</h1>
+    <p class="text-on-surface-variant font-body text-sm md:text-base">Secure Portal Gateway • Academic Year 2026</p>
+</div>
+<!-- Tabs -->
+<div class="flex space-x-8 border-b border-surface-container mb-8">
+    <button id="tab-signin" class="text-primary font-headline font-bold text-lg pb-4 border-b-2 border-primary transition-colors">Sign In</button>
+    <button id="tab-register" class="font-headline font-medium text-lg pb-4 text-on-surface-variant/60 hover:text-primary transition-colors border-b-2 border-transparent">Register</button>
+</div>
+
+<!-- Sign In Form Content -->
+<form id="signin-form" class="space-y-6">
+    <div class="space-y-1 relative">
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="login-email">Email Address</label>
+        <input class="input-clean" id="login-email" placeholder="email@example.com" type="email"/>
+    </div>
+    <div class="space-y-1 relative">
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="login-password">Password</label>
+        <input class="input-clean" id="login-password" placeholder="••••••••" type="password"/>
+    </div>
+    <div id="login-error" class="hidden text-error text-sm font-bold bg-error-container/50 px-4 py-3 rounded-lg border border-error-container"></div>
+    <div class="flex items-center justify-end mt-8">
+        <button id="login-btn" class="btn-scholar-primary flex items-center gap-2" type="button">
+            Sign In
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+        </button>
+    </div>
+</form>
+
+<!-- Approval Modal (Hidden by default) -->
+<div id="approval-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm transition-all">
+    <div class="bg-surface-container-lowest rounded-xl shadow-2xl p-8 max-w-sm text-center border border-primary/20 transform scale-95 animate-in fade-in zoom-in duration-300">
+        <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl">mark_email_read</span>
+        </div>
+        <h3 class="text-xl font-headline font-bold text-primary mb-3">Registration Successful</h3>
+        <p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Your application has been submitted to simulation. Please wait for **Branch Manager** approval before logging in.</p>
+        <button onclick="document.getElementById('approval-modal').classList.add('hidden'); switchTab(true);" class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold shadow-lg hover:bg-primary-container transition-all">Got it</button>
+    </div>
+</div>
+
+<!-- Registration Form -->
+<form id="register-form" class="space-y-6 hidden">
+    <div>
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1 mb-2">Select Your Role</label>
+        <div class="flex flex-wrap justify-start gap-4 mb-4">
+            <div class="role-square w-20 h-20 shadow-sm border-outline-variant/30 hover:bg-primary/5" data-role="manager">
+                <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+                <span>Manager</span>
+            </div>
+            <div class="role-square w-20 h-20 shadow-sm border-outline-variant/30 hover:bg-primary/5" data-role="teacher">
+                <span class="material-symbols-outlined text-2xl">school</span>
+                <span>Teacher</span>
+            </div>
+            <div class="role-square w-20 h-20 shadow-sm border-outline-variant/30 hover:bg-primary/5" data-role="student">
+                <span class="material-symbols-outlined text-2xl">person_book</span>
+                <span>Student</span>
+            </div>
+            <div class="role-square w-20 h-20 shadow-sm border-outline-variant/30 hover:bg-primary/5" data-role="secretary">
+                <span class="material-symbols-outlined text-2xl">support_agent</span>
+                <span>Secretary</span>
+            </div>
+            <div class="role-square w-20 h-20 shadow-sm border-outline-variant/30 hover:bg-primary/5" data-role="head_manager">
+                <span class="material-symbols-outlined text-2xl">shield_person</span>
+                <span>Dean</span>
+            </div>
+        </div>
+    </div>
+    <div class="space-y-1 relative">
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="reg-name">Full Legal Name</label>
+        <input class="input-clean" id="reg-name" placeholder="John Doe" type="text"/>
+    </div>
+    <div class="space-y-1 relative">
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="reg-email">Email Address</label>
+        <input class="input-clean" id="reg-email" placeholder="john@example.com" type="email"/>
+    </div>
+    <div class="space-y-1 relative">
+        <label class="font-label text-sm font-medium text-on-surface-variant block ml-1" for="reg-password">Create Password</label>
+        <input class="input-clean" id="reg-password" placeholder="••••••••" type="password"/>
+    </div>
+    <div id="reg-success" class="hidden text-[#003366] text-sm font-bold bg-[#cce5ff] px-4 py-3 rounded-lg border border-[#a7c8ff]"></div>
+    <div class="flex items-center justify-end mt-8">
+        <button id="register-submit-btn" class="btn-scholar-primary flex items-center gap-2" type="button">
+            Submit Registration
+            <span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+        </button>
+    </div>
+</form>
+</div>
+</div>
+<!-- Right Side: Imagery (Glass & Gradient overlay) -->
+<div class="hidden md:block w-full md:w-1/2 relative">
+<!-- Fallback gradient if image fails -->
+<div class="absolute inset-0 hero-gradient z-0"></div>
+<img class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80 z-10" data-alt="expansive view of modern college campus with historic stone architecture blending with contemporary glass structures, sunny day with vibrant green lawns and mature oak trees, students walking along pathways" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWHMCt7ndgvCJaj3REVVBsKg--NWySHDtImKeC7cTSJPOpci4V9upItAC9wcRM3HB23udjctWoRNrRfoEij5K_Y6XgCmBJ3mzLQsOErPqRbwvzHJG0NSzb4PllHdD6YLmnOFjkFUIbvWIPj3fHIfQxLo-_rKabptg4vc9e6CLOZu-TC9cKPovLO1OsU0VL1yKiuYqK0_bsUd6Job-CL_V6m9sVcSAIIP9_CRMBK-cPoIgaopj2YJmeeDI0Gzxi5k58B6o2B_oMIBb7"/>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px] z-20"></div>
+<!-- Editorial content over image -->
+<div class="absolute bottom-16 left-16 right-16 z-30">
+<div class="bg-surface-container-lowest/10 backdrop-blur-md p-8 rounded-xl border border-white/20">
+<p class="text-on-tertiary font-headline font-light text-2xl leading-relaxed">
+                            "The pursuit of knowledge is not merely a transaction, but a lifelong endeavor cultivated within an environment of excellence."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Developer Quick Access (Fake Sign-In) -->
+<section class="bg-surface-container-high/30 py-12 px-8 border-t border-outline-variant/10">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex flex-col items-center gap-6">
+            <div class="text-center">
+                <h3 class="font-headline font-bold text-primary text-xl mb-1">Developer Quick Access</h3>
+                <p class="text-xs text-on-surface-variant font-medium uppercase tracking-widest">Prototype Testing & Role Switching</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="fakeLogin('head_manager')" class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10 hover:border-primary/40 hover:shadow-md transition-all group w-28">
+                    <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">shield_person</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-primary">Dean</span>
+                </button>
+                <button onclick="fakeLogin('manager')" class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10 hover:border-primary/40 hover:shadow-md transition-all group w-28">
+                    <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">admin_panel_settings</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-primary">Manager</span>
+                </button>
+                <button onclick="fakeLogin('teacher')" class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10 hover:border-primary/40 hover:shadow-md transition-all group w-28">
+                    <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">school</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-primary">Teacher</span>
+                </button>
+                <button onclick="fakeLogin('student')" class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10 hover:border-primary/40 hover:shadow-md transition-all group w-28">
+                    <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">person_book</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-primary">Student</span>
+                </button>
+                <button onclick="fakeLogin('secretary')" class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10 hover:border-primary/40 hover:shadow-md transition-all group w-28">
+                    <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">support_agent</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-primary">Secretary</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<script>
+    // Fake Login Helper
+    window.fakeLogin = function(role) {
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.role === role);
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            const routeMap = {
+                'head_manager': '../dean/code.html',
+                'manager': '../manager/code.html',
+                'teacher': '../teacher/code.html',
+                'student': '../student/code.html',
+                'secretary': '../secrtary/code.html'
+            };
+            window.location.href = routeMap[role];
+        } else {
+            alert('Default user for this role not found. Please reset database.');
+        }
+    };
+</script>
+<!-- Footer Component Execution -->
+<footer class="bg-surface-container-low dark:bg-slate-950 w-full py-12 border-t border-outline-variant/10">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+<div class="font-headline font-black text-primary dark:text-white uppercase tracking-tighter">
+                Stellaris Academy
+            </div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-body text-xs text-on-surface-variant hover:text-primary dark:hover:text-white transition-all" href="#">Privacy Policy</a>
+<a class="font-body text-xs text-on-surface-variant hover:text-primary dark:hover:text-white transition-all" href="#">Terms of Service</a>
+<a class="font-body text-xs text-on-surface-variant hover:text-primary dark:hover:text-white transition-all" href="#">Accessibility</a>
+<a class="font-body text-xs text-on-surface-variant hover:text-primary dark:hover:text-white transition-all" href="#">Contact</a>
+</nav>
+<div class="font-body text-xs text-on-surface-variant">
+                © 2026 Stellaris Academy. Systems Operational.
+            </div>
+</div>
+</footer>
+
+<!-- Theme Toggle FAB for Reg page -->
+<button id="theme-toggle" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50 hover:scale-110 transition-transform">
+    <span class="material-symbols-outlined">light_mode</span>
+</button>
+
+<script>
+    // Theme toggle is handled globally in components.js if id="theme-toggle" exists
+
+    // --- Database Init ---
+    if (!localStorage.getItem('users')) {
+        localStorage.setItem('users', JSON.stringify([
+            { id: 1, name: 'Admin User', email: 'admin@stellaris.edu', password: 'password', role: 'head_manager', status: 'approved' },
+            { id: 2, name: 'Branch Manager', email: 'manager@stellaris.edu', password: 'password', role: 'manager', status: 'approved' },
+            { id: 3, name: 'Faculty Member', email: 'teacher@stellaris.edu', password: 'password', role: 'teacher', status: 'approved' },
+            { id: 4, name: 'Jane Doe', email: 'student@stellaris.edu', password: 'password', role: 'student', status: 'approved' },
+            { id: 5, name: 'Sarah Admin', email: 'secretary@stellaris.edu', password: 'password', role: 'secretary', status: 'approved' }
+        ]));
+    }
+    if (!localStorage.getItem('roomRequests')) {
+        localStorage.setItem('roomRequests', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('masterSchedule')) {
+        localStorage.setItem('masterSchedule', JSON.stringify({
+            'mon-9': { title: 'Calculus III', room: 'Math 301', prof: 'Dr. Jones', color: 'primary' },
+            'tue-10:30': { title: 'Adv. Quantum', room: 'Phys 410', prof: 'Dr. Marcus Johnson', color: 'secondary' }
+        }));
+    }
+
+    // --- Tab Logic ---
+    const tabSignin = document.getElementById('tab-signin');
+    const tabRegister = document.getElementById('tab-register');
+    const formSignin = document.getElementById('signin-form');
+    const formRegister = document.getElementById('register-form');
+
+    function switchTab(toSign) {
+        if (toSign) {
+            tabSignin.classList.add('text-primary', 'font-bold', 'border-primary');
+            tabSignin.classList.remove('text-on-surface-variant/60', 'font-medium', 'border-transparent');
+            
+            tabRegister.classList.remove('text-primary', 'font-bold', 'border-primary', 'animate-pulse');
+            tabRegister.classList.add('text-on-surface-variant/60', 'font-medium', 'border-transparent');
+
+            formSignin.classList.remove('hidden');
+            formRegister.classList.add('hidden');
+        } else {
+            tabRegister.classList.add('text-primary', 'font-bold', 'border-primary');
+            tabRegister.classList.remove('text-on-surface-variant/60', 'font-medium', 'border-transparent', 'animate-pulse');
+
+            tabSignin.classList.remove('text-primary', 'font-bold', 'border-primary');
+            tabSignin.classList.add('text-on-surface-variant/60', 'font-medium', 'border-transparent');
+
+            formRegister.classList.remove('hidden');
+            formSignin.classList.add('hidden');
+        }
+    }
+    tabSignin.addEventListener('click', () => switchTab(true));
+    tabRegister.addEventListener('click', () => switchTab(false));
+
+    // --- Auth Logic ---
+    let selectedRole = null;
+    const roleSquares = document.querySelectorAll('.role-square');
+    
+    roleSquares.forEach(square => {
+        square.addEventListener('click', () => {
+            roleSquares.forEach(sq => sq.classList.remove('ring-4', 'ring-primary', 'bg-primary/10', 'scale-105', 'border-transparent'));
+            square.classList.add('ring-4', 'ring-primary', 'bg-primary/10', 'scale-105', 'border-transparent');
+            selectedRole = square.getAttribute('data-role');
+        });
+    });
+
+    const routeMap = {
+        'head_manager': '../dean/code.html',
+        'manager': '../manager/code.html',
+        'teacher': '../teacher/code.html',
+        'student': '../student/code.html',
+        'secretary': '../secrtary/code.html'
+    };
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+        const errorEl = document.getElementById('login-error');
+        errorEl.classList.add('hidden');
+
+        if (!email || !pass) {
+            errorEl.innerText = "Please enter both email and password.";
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.email === email && u.password === pass);
+
+        if (!user) {
+            errorEl.innerText = "Invalid credentials or account does not exist.";
+            errorEl.classList.remove('hidden');
+            // Trigger pulse animation on register tab
+            tabRegister.classList.add('animate-pulse');
+            return;
+        }
+
+        if (user.status !== 'approved') {
+            errorEl.innerText = "Invalid credentials or account pending approval.";
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        // Success - Log in
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.location.href = routeMap[user.role] || '#';
+    });
+
+    document.getElementById('register-submit-btn').addEventListener('click', () => {
+        const name = document.getElementById('reg-name').value;
+        const email = document.getElementById('reg-email').value;
+        const pass = document.getElementById('reg-password').value;
+        const successEl = document.getElementById('reg-success');
+        successEl.classList.add('hidden');
+        
+        if (!name || !email || !pass || !selectedRole) {
+            alert('Please fill out all fields and select a role.');
+            return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        if (users.find(u => u.email === email)) {
+            alert('Account already exists with this email.');
+            return;
+        }
+
+        const newUser = {
+            id: Date.now(),
+            name: name,
+            email: email,
+            password: pass,
+            role: selectedRole,
+            status: 'pending_approval'
+        };
+
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Simulate notification for Branch Manager
+        const notifs = JSON.parse(localStorage.getItem('managerNotifs')) || [];
+        notifs.push({
+            id: Date.now(),
+            text: `Action Required: New ${selectedRole} registration from ${name}`,
+            type: 'registration',
+            userId: newUser.id,
+            timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('managerNotifs', JSON.stringify(notifs));
+
+        // Show Success Modal instead of just text
+        document.getElementById('approval-modal').classList.remove('hidden');
+        document.getElementById('register-form').reset();
+        
+        // Reset role squares
+        roleSquares.forEach(sq => sq.classList.remove('ring-4', 'ring-primary', 'bg-primary/10', 'scale-105', 'border-transparent'));
+        selectedRole = null;
+    });
+    // Generic Mockup Handler
+    document.addEventListener('DOMContentLoaded', () => {
+        const toastHTML = `
+            <div id="dev-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-primary text-on-primary font-body font-semibold text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-300">
+                Action coming soon in full release
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', toastHTML);
+        const devToast = document.getElementById('dev-toast');
+
+        function showDevToast(e) {
+            e.preventDefault();
+            let actionName = e.currentTarget.innerText.trim();
+            if (!actionName) {
+                const icon = e.currentTarget.querySelector('.material-symbols-outlined');
+                if (icon) actionName = icon.textContent.trim();
+            }
+            actionName = actionName.split('\n')[0].trim();
+            if (actionName && actionName.length > 25) actionName = "This feature";
+            if (!actionName) actionName = "Action";
+            
+            const pageRole = document.title.split(' - ')[0] || "Module";
+            devToast.innerHTML = `<span class="font-bold opacity-80 mr-2">[${pageRole}]</span> "${actionName}" coming soon.`;
+            devToast.classList.remove('opacity-0');
+            setTimeout(() => devToast.classList.add('opacity-0'), 2500);
+        }
+
+        document.querySelectorAll('a[href="#"]').forEach(el => {
+            el.addEventListener('click', showDevToast);
+        });
+
+        document.querySelectorAll('button:not([id])').forEach(el => {
+            if (!el.getAttribute('onclick') && el.type !== 'submit') {
+                el.addEventListener('click', showDevToast);
+            }
+        });
+    });
+</script>
+<script src="../components.js"></script>
+</body></html>
